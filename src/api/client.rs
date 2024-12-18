@@ -13,11 +13,20 @@ impl APIClient {
         }
     }
 
-    pub async fn request(&self) {
+    // TODO: ボディとURLを引数からいい感じに受け取るようにする
+    pub async fn request(&self) -> Result<serde_json::Value, reqwest::Error> {
         let client = Client::new();
         let mut headers = header::HeaderMap::new();
         headers.insert(header::CONTENT_TYPE, header::HeaderValue::from_static("application/json"));
         headers.insert(header::AUTHORIZATION, format!("Bearer {}", self.token).parse().unwrap());
+        let res = client.post(&self.origin)
+            .headers(headers)
+            .body("body")
+            .send()
+            .await?;
+        
+        let json: serde_json::Value = res.json().await?;
+        Ok(json)
     }
 }
 
@@ -25,8 +34,9 @@ impl APIClient {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test() {
+    #[tokio::test]
+    async fn test() {
         let client = APIClient::new("https://c.koliosky.com", "IIKANJI_TOKEN");
+        let res = client.request().await.unwrap();
     }
 }
