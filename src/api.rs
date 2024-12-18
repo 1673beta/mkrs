@@ -11,7 +11,7 @@
 //     let model: api = serde_json::from_str(&json).unwrap();
 // }
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize)]
@@ -6623,8 +6623,7 @@ pub struct Scope {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Var {
-}
+pub struct Var {}
 
 #[derive(Serialize, Deserialize)]
 pub struct AdminAvatarDecorationsList {
